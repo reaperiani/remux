@@ -7,6 +7,10 @@ import subprocess
 video_file = ""
 audio_file = ""
 rimuovi = ""
+#script_directory = os.path.dirname(os.path.abspath(__file__))
+script_directory = os.getcwd()
+ffmpeg_executable = os.path.join(script_directory, "ffmpeg.exe")
+
 
 
 def browse_video():
@@ -23,13 +27,17 @@ def browse_audio():
 
 def run_ffmpeg_remove_audio(video_file):
     output_file = os.path.splitext(video_file)[0] + "_noaudio.mkv"
-    cmd = f"ffmpeg -i {video_file} -c copy -an {output_file}"
+    cmd = f"{ffmpeg_executable} -i {video_file} -c copy -an {output_file}"
+    print(cmd)
+    # cmd = f"ffmpeg -i {video_file} -c copy -an {output_file}"
     subprocess.run(cmd, shell=True)
 
 def run_ffmpeg_add_audio(video_file, audio_file):
     output_file = os.path.splitext(video_file)[0] + "_output.mkv"
     noau = os.path.splitext(video_file)[0] + "_noaudio.mkv"
-    cmd = f"ffmpeg -i {noau} -i {audio_file} -c copy -map 0 -map 1:a {output_file}"
+    cmd = f"{ffmpeg_executable} -i {noau} -i {audio_file} -c copy -map 0 -map 1:a {output_file}"
+    print(cmd)
+    # cmd = f"ffmpeg -i {noau} -i {audio_file} -c copy -map 0 -map 1:a {output_file}"
     subprocess.run(cmd, shell=True)
 
 def merge_video_and_audio():
